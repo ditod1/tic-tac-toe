@@ -39,6 +39,10 @@ const DisplayController = (() => {
     cell.textContent = sign;
   }
 
+  const updateMessage = (sign) => {
+    message.textContent = `Player ${sign}'s turn`
+  }
+
   const displayWinnner = (winner) => {
     if (winner === 'draw') {
       message.textContent = 'Draw'
@@ -46,10 +50,19 @@ const DisplayController = (() => {
     else {
       message.textContent = `${winner} wins`
     }
-
   }
+
+  const resetBoard = () => {
+    updateMessage('X')
+    const children = [...boardCells.children];
+    children.forEach(element => {
+      element.textContent = ''
+    })
+    GameFlowController.endRound()
+  }
+  btn.addEventListener('click', resetBoard);
   boardCells.addEventListener('click', updateGameboard);
-  return { displayWinnner }
+  return { displayWinnner, updateMessage }
 })()
 
 const GameFlowController = (() => {
@@ -59,6 +72,7 @@ const GameFlowController = (() => {
   let previousSign = playerO.getSign()
   const winningCombination = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
   const playRound = (index) => {
+    DisplayController.updateMessage(previousSign)
     const sign = getCurrentSign()
     GameBoard.setCell(index, sign)
     if (checkWin(sign)) {
@@ -68,6 +82,7 @@ const GameFlowController = (() => {
       DisplayController.displayWinnner('draw')
     }
     else {
+
       roundCount++;
     }
     return sign
@@ -94,7 +109,12 @@ const GameFlowController = (() => {
         return false
       })
     })
-
   }
-  return { playRound }
+
+  const endRound = () => {
+    roundCount = 1;
+    previousSign = playerO.getSign()
+    GameBoard.resetBoard()
+  }
+  return { playRound, endRound }
 })()
