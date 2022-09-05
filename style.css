@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.game-board {
+  display: grid;
+  width: 150px;
+  height: 150px;
+  gap: 2px;
+  background-color: black;
+  grid-template-columns: repeat(3, auto);
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  background-color: white;
+}
